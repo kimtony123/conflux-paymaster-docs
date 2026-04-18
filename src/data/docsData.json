@@ -1,0 +1,168 @@
+{
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "Introduction",
+      "subsections": [
+        {
+          "id": "what-is-conflux-paymaster",
+          "title": "What is Conflux Paymaster SDK?",
+          "content": "<p>Conflux Paymaster SDK is an open-source TypeScript library that enables any Conflux eSpace dApp to sponsor gas fees for its users. Built on the ERC-4337 Account Abstraction standard, it eliminates the biggest barrier to Web3 adoption: requiring users to hold CFX just to transact.</p><h4>Key Features:</h4><ul><li><strong>Gasless Transactions:</strong> dApps sponsor all user gas fees</li><li><strong>Smart Accounts:</strong> ERC-4337 compatible smart accounts</li><li><strong>TypeScript First:</strong> Full type safety and IntelliSense</li><li><strong>Open Source:</strong> MIT licensed</li><li><strong>Conflux Native:</strong> Purpose-built for eSpace</li></ul>"
+        },
+        {
+          "id": "installation",
+          "title": "Installation",
+          "content": "<p>Install via npm:</p><pre><code>npm install @conflux-paymaster/sdk viem</code></pre><p>Or using yarn:</p><pre><code>yarn add @conflux-paymaster/sdk viem</code></pre><p>Or using pnpm:</p><pre><code>pnpm add @conflux-paymaster/sdk viem</code></pre><h4>Peer Dependencies:</h4><ul><li><code>viem</code> (^2.0.0) - Required for wallet connections</li><li><code>ethers</code> (^6.0.0) - Optional, for alternative WalletClient</li></ul>"
+        },
+        {
+          "id": "quick-start",
+          "title": "Quick Start",
+          "content": "<p>Initialize the SDK and send a gasless transaction:</p><pre><code>import { ConfluxPaymaster } from '@conflux-paymaster/sdk';\n\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'https://api.conflux-paymaster.io',\n  chainId: 71,\n});\n\n// Connect user's wallet\nawait paymaster.connect(userPrivateKey);\n\n// Send gasless transaction\nconst result = await paymaster.sendTransaction({\n  to: tokenAddress,\n  data: encodedData,\n});\n\nconsole.log('UserOp Hash:', result.userOpHash);</code></pre><p>That's it! The user never sees a gas fee prompt.</p>"
+        }
+      ]
+    },
+    {
+      "id": "configuration",
+      "title": "Configuration",
+      "subsections": [
+        {
+          "id": "paymaster-config",
+          "title": "PaymasterConfig",
+          "content": "<p>The ConfluxPaymaster constructor takes a PaymasterConfig object:</p><pre><code>interface PaymasterConfig {\n  rpcUrl: string;           // Conflux eSpace RPC (testnet/mainnet)\n  paymasterAddress: string; // Deployed VerifyingPaymaster address\n  signingServiceUrl: string; // Your backend signing service URL\n  chainId: 71 | 1030;       // 71 = testnet, 1030 = mainnet\n  bundlerUrl?: string;      // Optional custom bundler URL\n  entryPointAddress?: string; // Optional custom EntryPoint\n}</code></pre><h4>Example Configuration:</h4><pre><code>const config: PaymasterConfig = {\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'http://localhost:3001',\n  chainId: 71,\n};</code></pre>"
+        },
+        {
+          "id": "environment-variables",
+          "title": "Environment Variables",
+          "content": "<p>Configure your application with environment variables:</p><table><thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td>CONFLUX_RPC_URL</td><td>Yes</td><td>Conflux eSpace RPC endpoint</td></tr><tr><td>PAYMASTER_ADDRESS</td><td>Yes</td><td>Deployed VerifyingPaymaster contract</td></tr><tr><td>SIGNING_SERVICE_URL</td><td>Yes</td><td>Backend signing service URL</td></tr><tr><td>CHAIN_ID</td><td>Yes</td><td>71 (testnet) or 1030 (mainnet)</td></tr><tr><td>BUNDLER_URL</td><td>No</td><td>Custom ERC-4337 bundler URL</td></tr></tbody></table><h4>Example .env file:</h4><pre><code>CONFLUX_RPC_URL=https://evmtestnet.confluxrpc.com\nPAYMASTER_ADDRESS=0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B\nSIGNING_SERVICE_URL=http://localhost:3001\nCHAIN_ID=71</code></pre>"
+        },
+        {
+          "id": "contract-addresses",
+          "title": "Deployed Contract Addresses",
+          "content": "<h4>Testnet (Chain ID: 71)</h4><table><thead><tr><th>Contract</th><th>Address</th></tr></thead><tbody><tr><td>EntryPoint</td><td>0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789</td></tr><tr><td>SimpleAccountFactory</td><td>0xcF2acdAEde6bb2549647CA5eE52fe5b86757d01E</td></tr><tr><td>VerifyingPaymaster</td><td>0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B</td></tr></tbody></table><h4>Mainnet (Chain ID: 1030)</h4><p>Deploy using:</p><pre><code>cd packages/contracts\nnpm run deploy:mainnet</code></pre>"
+        }
+      ]
+    },
+    {
+      "id": "api-reference",
+      "title": "API Reference",
+      "subsections": [
+        {
+          "id": "confluxpaymaster-class",
+          "title": "ConfluxPaymaster Class",
+          "content": "<h4>Constructor</h4><pre><code>new ConfluxPaymaster(config: PaymasterConfig)</code></pre><h4>Methods:</h4><table><thead><tr><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code>connect(privateKey)</code></td><td>Connect a user's wallet</td></tr><tr><td><code>setFactory(address)</code></td><td>Set the SimpleAccountFactory address</td></tr><tr><td><code>getSmartAccountAddress(owner, salt?)</code></td><td>Get predicted account address</td></tr><tr><td><code>sendTransaction(tx)</code></td><td>Send a gasless transaction</td></tr><tr><td><code>getPaymasterQuote()</code></td><td>Get current gas quotes</td></tr></tbody></table><h4>Example:</h4><pre><code>const paymaster = new ConfluxPaymaster(config);\npaymaster.connect('0x...'); // User's private key\nconst account = await paymaster.getOrCreateAccount();\nconst result = await paymaster.sendTransaction({\n  to: '0x...',\n  data: '0x...'\n});</code></pre>"
+        },
+        {
+          "id": "types",
+          "title": "TypeScript Types",
+          "content": "<h4>Core Types:</h4><pre><code>interface SponsoredTransaction {\n  to: Address;        // Target contract\n  data?: Hex;          // Encoded call data\n  value?: bigint;      // Native token value\n}\n\ninterface SponsoredTransactionResult {\n  userOpHash: string;    // UserOperation hash\n  txHash?: string;     // Transaction hash (after inclusion)\n  success: boolean;    // Success status\n}\n\ninterface PaymasterQuote {\n  maxFeePerGas: string;\n  maxPriorityFeePerGas: string;\n  gasPrice: string;\n}</code></pre><p><strong>All types are exported from the SDK:</strong></p><pre><code>import {\n  ConfluxPaymaster,\n  PaymasterConfig,\n  SponsoredTransaction,\n  SponsoredTransactionResult,\n  PaymasterQuote\n} from '@conflux-paymaster/sdk';</code></pre>"
+        }
+      ]
+    },
+    {
+      "id": "smart-contracts",
+      "title": "Smart Contracts",
+      "subsections": [
+        {
+          "id": "verifying-paymaster",
+          "title": "VerifyingPaymaster.sol",
+          "content": "<p>The VerifyingPaymaster contract verifies signatures and sponsors gas fees.</p><h4>Key Functions:</h4><table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody><tr><td><code>validatePaymasterUserOp()</code></td><td>Validates UserOp and verifies paymaster signature</td></tr><tr><td><code>getHash()</code></td><td>Computes hash for signature verification</td></tr><tr><td><code>setVerifier()</code></td><td>Updates the verifier address (owner only)</td></tr><tr><td><code>deposit()</code></td><td>Adds funds for gas sponsorship</td></tr></tbody></table><h4>Deployment:</h4><pre><code>cd packages/contracts\nnpm run deploy:testnet</code></pre><h4>Verification:</h4><pre><code>npx hardhat verify --network confluxTestnet &lt;address&gt; &lt;entryPoint&gt; &lt;verifier&gt; &lt;minStake&gt; &lt;unstakeDelay&gt;</code></pre>"
+        },
+        {
+          "id": "simple-account",
+          "title": "SimpleAccount.sol",
+          "content": "<p>ERC-4337 compatible smart account implementation.</p><h4>Key Functions:</h4><table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody><tr><td><code>execute()</code></td><td>Execute a single transaction</td></tr><tr><td><code>executeBatch()</code></td><td>Execute multiple transactions</td></tr><tr><td><code>validateUserOp()</code></td><td>EntryPoint validation</td></tr><tr><td><code>transferOwnership()</code></td><td>Transfer account ownership</td></tr></tbody></table><h4>Features:</h4><ul><li>Sub-account support via salt</li><li>Access control with owner</li><li>Native token support (receive())</li><li>Replay protection via nonce</li></ul>"
+        },
+        {
+          "id": "simple-account-factory",
+          "title": "SimpleAccountFactory.sol",
+          "content": "<p>Deploys SimpleAccount contracts deterministically using CREATE2.</p><h4>Key Functions:</h4><table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody><tr><td><code>createAccount()</code></td><td>Deploy new SimpleAccount for owner</td></tr><tr><td><code>getAddress()</code></td><td>Predict account address before deploy</td></tr><tr><td><code>accountExists()</code></td><td>Check if account is deployed</td></tr></tbody></table><h4>Address Calculation:</h4><p>Accounts are deployed using CREATE2 with:</p><ul><li><code>owner</code> address</li><li><code>salt</code> (nonce for multiple accounts per owner)</li><li>Factory bytecode</li></ul><p>This ensures deterministic addresses that can be predicted before deployment.</p>"
+        }
+      ]
+    },
+    {
+      "id": "backend-service",
+      "title": "Backend Service",
+      "subsections": [
+        {
+          "id": "signing-service",
+          "title": "Signing Service",
+          "content": "<p>The backend signing service securely signs UserOperations to sponsor gas fees.</p><h4>Endpoints:</h4><table><thead><tr><th>Endpoint</th><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code>/health</code></td><td>GET</td><td>Health check</td></tr><tr><td><code>/api/paymaster/sign</code></td><td>POST</td><td>Sign UserOperation</td></tr><tr><td><code>/api/paymaster/quote</code></td><td>GET</td><td>Get gas price quote</td></tr></tbody></table><h4>Signing Flow:</h4><ol><li>SDK sends UserOperation to backend</li><li>Backend validates the request (rate limiting, whitelisting)</li><li>Backend computes hash and signs with verifier key</li><li>Backend returns <code>paymasterAndData</code> signature</li></ol><h4>Security:</h4><ul><li>Rate limiting per user/IP</li><li>Request validation</li><li>Key stored securely (not exposed to client)</li></ul>"
+        },
+        {
+          "id": "deployment",
+          "title": "Backend Deployment",
+          "content": "<h4>Local Development:</h4><pre><code>cd packages/backend\ncp .env.example .env\n# Edit .env with your configuration\nnpm run dev</code></pre><h4>Production (Render/Railway):</h4><ol><li>Push to GitHub</li><li>Connect to Render/Railway</li><li>Add environment variables</li><li>Deploy</li></ol><h4>Environment Variables:</h4><pre><code>PAYMASTER_ADDRESS=0x...\nSIGNER_PRIVATE_KEY=0x...\nCONFLUX_RPC_URL=https://evmtestnet.confluxrpc.com\nCHAIN_ID=71\nDAILY_TX_LIMIT=100\nPORT=3001</code></pre>"
+        }
+      ]
+    },
+    {
+      "id": "tutorials",
+      "title": "Tutorials",
+      "subsections": [
+        {
+          "id": "basic-integration",
+          "title": "Basic Integration",
+          "content": "<p>A complete example of integrating Conflux Paymaster SDK:</p><pre><code>import { ConfluxPaymaster } from '@conflux-paymaster/sdk';\nimport { encodeFunctionData, parseAbi } from 'viem';\n\n// Initialize\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'http://localhost:3001',\n  chainId: 71,\n});\n\n// Connect user\nawait paymaster.connect(userPrivateKey);\n\n// Set factory\nawait paymaster.setFactory('0xcF2acdAEde6bb2549647CA5eE52fe5b86757d01E');\n\n// ERC-20 transfer example\nconst transferData = encodeFunctionData({\n  abi: parseAbi(['function transfer(address to, uint256 amount)']),\n  functionName: 'transfer',\n  args: [recipientAddress, BigInt(1e18)]\n});\n\n// Send gasless transaction\nconst result = await paymaster.sendTransaction({\n  to: tokenAddress,\n  data: transferData,\n});\n\nconsole.log('Success! UserOp:', result.userOpHash);</code></pre>"
+        },
+        {
+          "id": "nextjs-example",
+          "title": "Next.js Integration",
+          "content": "<p>Integrating with a Next.js frontend:</p><pre><code>// lib/paymaster.ts\nimport { ConfluxPaymaster } from '@conflux-paymaster/sdk';\n\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: process.env.NEXT_PUBLIC_CONFLUX_RPC_URL!,\n  paymasterAddress: process.env.NEXT_PUBLIC_PAYMASTER_ADDRESS!,\n  signingServiceUrl: process.env.NEXT_PUBLIC_SIGNING_SERVICE_URL!,\n  chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '71') as 71 | 1030,\n});\n\nexport default paymaster;</code></pre><p>Then use in your components:</p><pre><code>import paymaster from '@/lib/paymaster';\n\nawait paymaster.connect(privateKey);\nconst result = await paymaster.sendTransaction({\n  to: contractAddress,\n  data: txData\n});</code></pre>"
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "subsections": [
+        {
+          "id": "erc20-transfer",
+          "title": "ERC-20 Transfer",
+          "content": "<p>Example: Transferring ERC-20 tokens gas-free</p><pre><code>import { ConfluxPaymaster, encodeFunctionData } from '@conflux-paymaster/sdk';\n\nconst paymaster = new ConfluxPaymaster(config);\nawait paymaster.connect(userPrivateKey);\n\n// Token transfer\nconst data = encodeFunctionData({\n  functionName: 'transfer',\n  args: [recipient, BigInt(1e18)]\n});\n\nconst result = await paymaster.sendTransaction({\n  to: usdtAddress,\n  data\n});</code></pre>"
+        },
+        {
+          "id": "nft-mint",
+          "title": "NFT Mint",
+          "content": "<p>Example: Minting an NFT without gas fees</p><pre><code>const data = encodeFunctionData({\n  functionName: 'mint',\n  args: [userAddress, tokenUri]\n});\n\nconst result = await paymaster.sendTransaction({\n  to: nftContractAddress,\n  data\n});</code></pre>"
+        },
+        {
+          "id": "contract-interaction",
+          "title": "Contract Interaction",
+          "content": "<p>Example: Interacting with any smart contract</p><pre><code>// Swap on DEX\nconst swapData = encodeFunctionData({\n  functionName: 'swap',\n  args: [amountIn, amountOutMin, path, to, deadline]\n});\n\nconst result = await paymaster.sendTransaction({\n  to: dexAddress,\n  data: swapData\n});</code></pre>"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "title": "Security",
+      "subsections": [
+        {
+          "id": "best-practices",
+          "title": "Security Best Practices",
+          "content": "<h4>For dApp Developers:</h4><ol><li><strong>Never expose signing keys</strong> - Always use the backend service</li><li><strong>Implement rate limiting</strong> - Prevent abuse of your sponsorship</li><li><strong>Validate user addresses</strong> - Only sponsor known/verified users</li><li><strong>Monitor paymaster balance</strong> - Set up alerts for low balance</li><li><strong>Use environment variables</strong> - Never hardcode sensitive data</li></ol><h4>Backend Security:</h4><ul><li>Store keys in secrets manager (AWS KMS, HashiCorp Vault)</li><li>Rotate signing keys regularly</li><li>Implement IP-based rate limiting</li><li>Log all signing requests for auditing</li></ul>"
+        },
+        {
+          "id": "rate-limiting",
+          "title": "Rate Limiting",
+          "content": "<p>Implement rate limiting in your backend:</p><pre><code>// Example with express-rate-limit\nimport rateLimit from 'express-rate-limit';\n\nconst limiter = rateLimit({\n  windowMs: 24 * 60 * 60 * 1000, // 24 hours\n  max: 100, // limit each IP to 100 requests per window\n  message: 'Too many requests, please try again tomorrow'\n});\n\napp.use('/api/paymaster/', limiter);</code></pre><h4>Recommended Limits:</h4><table><thead><tr><th>dApp Type</th><th>Recommended Daily Limit</th></tr></thead><tbody><tr><td>DeFi</td><td>50 transactions/day</td></tr><tr><td>Gaming</td><td>100 transactions/day</td></tr><tr><td>NFT</td><td>20 transactions/day</td></tr></tbody></table>"
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "Troubleshooting",
+      "subsections": [
+        {
+          "id": "common-errors",
+          "title": "Common Errors",
+          "content": "<p><strong>Error: 'Insufficient paymaster balance'</strong><br/><em>Solution:</em> Fund your VerifyingPaymaster contract with CFX</p><p><strong>Error: 'Invalid signature'</strong><br/><em>Solution:</em> Verify your signing service is running and keys are correct</p><p><strong>Error: 'UserOperation reverted'</strong><br/><em>Solution:</em> Check the target contract and data encoding</p><p><strong>Error: 'Factory not set'</strong><br/><em>Solution:</em> Call <code>setFactory(factoryAddress)</code> before sending transactions</p><p><strong>Error: 'Account not deployed'</strong><br/><em>Solution:</em> Ensure the SimpleAccount is deployed - fund the address for deployment</p>"
+        },
+        {
+          "id": "debugging",
+          "title": "Debugging",
+          "content": "<p>Enable debug logging:</p><pre><code>const paymaster = new ConfluxPaymaster({\n  ...config,\n  debug: true\n});</code></pre><p><strong>Check contract deployment:</strong></p><pre><code>npx hardhat run scripts/verify.ts --network confluxTestnet</code></pre><p><strong>Check bundler status:</strong></p><pre><code>curl -X POST &lt;bundler-url&gt; \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"jsonrpc\":\"2.0\",\"method\":\"eth_getUserOperationByHash\",\"params\":[\"&lt;userOpHash&gt;\"],\"id\":1}'</code></pre>"
+        }
+      ]
+    }
+  ]
+}
