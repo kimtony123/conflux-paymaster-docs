@@ -1,9 +1,14 @@
 {
   "sections": [
     {
-      "id": "introduction",
-      "title": "Introduction",
+      "id": "getting-started",
+      "title": "Getting Started",
       "subsections": [
+        {
+          "id": "developer-dashboard",
+          "title": "Developer Dashboard",
+          "content": "<p>The Conflux Paymaster Developer Dashboard is a multi-tenant platform where dApp developers can:</p><ul><li><strong>Register their dApp</strong> - Sign up and create a project</li><li><strong>Get an API Key</strong> - Receive a unique API key for usage tracking</li><li><strong>Deposit Funds</strong> - Add CFX to sponsor user gas fees</li><li><strong>Monitor Usage</strong> - Track transactions and spending via charts</li></ul><h4>Onboarding Flow:</h4><ol><li>Visit <a href='/#/login'>Login</a> and connect your wallet</li><li>If new, you'll be directed to Sign Up</li><li>Enter your project name, type, and description</li><li>After registration, you'll receive an API key</li><li>Deposit CFX to your paymaster balance</li><li>Use the API key in your SDK integration</li></ol><h4>Project Types Supported:</h4><ul><li>DeFi</li><li>NFT Marketplace</li><li>Game</li><li>Social Network</li><li>Wallet</li><li>Crypto Exchange</li><li>DAO</li><li>Launchpad</li><li>Other</li></ul><p><strong>2% Fee:</strong> A 2% fee is applied on all deposits to support platform development. The fee wallet is: <code>0x059c159c1061C3cd082d020e0F77260234A3f523</code></p>"
+        },
         {
           "id": "what-is-conflux-paymaster",
           "title": "What is Conflux Paymaster SDK?",
@@ -12,12 +17,12 @@
         {
           "id": "installation",
           "title": "Installation",
-          "content": "<p>Install via npm:</p><pre><code>npm install @conflux-paymaster/sdk viem</code></pre><p>Or using yarn:</p><pre><code>yarn add @conflux-paymaster/sdk viem</code></pre><p>Or using pnpm:</p><pre><code>pnpm add @conflux-paymaster/sdk viem</code></pre><h4>Peer Dependencies:</h4><ul><li><code>viem</code> (^2.0.0) - Required for wallet connections</li><li><code>ethers</code> (^6.0.0) - Optional, for alternative WalletClient</li></ul>"
+          "content": "<p>Install via npm:</p><pre><code>npx jsr add @conflux-paymaster/conflux-paymaster-sdk</code></pre><p>Or using pnpm:</p><pre><code>pnpm i jsr:@conflux-paymaster/conflux-paymaster-sdk</code></pre><p>Or using yarn:</p><pre><code>yarn dlx jsr add @conflux-paymaster/conflux-paymaster-sdk</code></pre><p>Or using bun:</p><pre><code>bunx jsr add @conflux-paymaster/conflux-paymaster-sdk</code></pre><p>Or using deno:</p><pre><code>deno add @conflux-paymaster/conflux-paymaster-sdk</code></pre><h4>Peer Dependencies:</h4><ul><li><code>viem</code> (^2.0.0) - Required for wallet connections</li><li><code>ethers</code> (^6.0.0) - Optional, for alternative WalletClient</li></ul>"
         },
         {
           "id": "quick-start",
           "title": "Quick Start",
-          "content": "<p>Initialize the SDK and send a gasless transaction:</p><pre><code>import { ConfluxPaymaster } from '@conflux-paymaster/sdk';\n\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'https://api.conflux-paymaster.io',\n  chainId: 71,\n});\n\n// Connect user's wallet\nawait paymaster.connect(userPrivateKey);\n\n// Send gasless transaction\nconst result = await paymaster.sendTransaction({\n  to: tokenAddress,\n  data: encodedData,\n});\n\nconsole.log('UserOp Hash:', result.userOpHash);</code></pre><p>That's it! The user never sees a gas fee prompt.</p>"
+          "content": "<p>Initialize the SDK and send a gasless transaction:</p><pre><code>import { ConfluxPaymaster } from '@conflux-paymaster/conflux-paymaster-sdk';\n\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'https://conflux-paymaster.onrender.com',\n  chainId: 71,\n  apiKey: 'YOUR_API_KEY'  // Get from dashboard\n});\n\n// Connect user's wallet\nawait paymaster.connect(userPrivateKey);\n\n// Send gasless transaction\nconst result = await paymaster.sendTransaction({\n  to: tokenAddress,\n  data: encodedData,\n  value: 0n\n});\n\nconsole.log('UserOp Hash:', result.userOpHash);</code></pre><p><strong>That's it!</strong> The user never sees a gas fee prompt.</p><h4>Live Test Result - April 19, 2026:</h4><ul><li>TX: 0x74ac671c67b960a17f9911e1d5995625d1c024f678aea308cde09b7e19be0bdd</li><li>Sender CFX Before: 0.20302872454897</li><li>Sender CFX After: 0.20302872454897 <strong>(UNCHANGED!)</strong></li></ul><p><a href='https://evmtestnet.confluxscan.io/tx/0x74ac671c67b960a17f9911e1d5995625d1c024f678aea308cde09b7e19be0bdd' target='_blank'>View on ConfluxScan →</a></p>"
         }
       ]
     },
@@ -28,7 +33,7 @@
         {
           "id": "paymaster-config",
           "title": "PaymasterConfig",
-          "content": "<p>The ConfluxPaymaster constructor takes a PaymasterConfig object:</p><pre><code>interface PaymasterConfig {\n  rpcUrl: string;           // Conflux eSpace RPC (testnet/mainnet)\n  paymasterAddress: string; // Deployed VerifyingPaymaster address\n  signingServiceUrl: string; // Your backend signing service URL\n  chainId: 71 | 1030;       // 71 = testnet, 1030 = mainnet\n  bundlerUrl?: string;      // Optional custom bundler URL\n  entryPointAddress?: string; // Optional custom EntryPoint\n}</code></pre><h4>Example Configuration:</h4><pre><code>const config: PaymasterConfig = {\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'http://localhost:3001',\n  chainId: 71,\n};</code></pre>"
+          "content": "<p>The ConfluxPaymaster constructor takes a PaymasterConfig object:</p><pre><code>interface PaymasterConfig {\n  rpcUrl: string;           // Conflux eSpace RPC (testnet/mainnet)\n  paymasterAddress: string; // Deployed VerifyingPaymaster address\n  signingServiceUrl: string; // Your backend signing service URL\n  chainId: 71 | 1030;       // 71 = testnet, 1030 = mainnet\n  bundlerUrl?: string;      // Optional custom bundler URL\n  entryPointAddress?: string; // Optional custom EntryPoint\n}</code></pre><h4>Example Configuration:</h4><pre><code>const config: PaymasterConfig = {\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'https://conflux-paymaster.onrender.com',\n  chainId: 71,\n};</code></pre>"
         },
         {
           "id": "environment-variables",
@@ -38,7 +43,7 @@
         {
           "id": "contract-addresses",
           "title": "Deployed Contract Addresses",
-          "content": "<h4>Testnet (Chain ID: 71)</h4><table><thead><tr><th>Contract</th><th>Address</th></tr></thead><tbody><tr><td>EntryPoint</td><td>0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789</td></tr><tr><td>SimpleAccountFactory</td><td>0xcF2acdAEde6bb2549647CA5eE52fe5b86757d01E</td></tr><tr><td>VerifyingPaymaster</td><td>0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B</td></tr></tbody></table><h4>Mainnet (Chain ID: 1030)</h4><p>Deploy using:</p><pre><code>cd packages/contracts\nnpm run deploy:mainnet</code></pre>"
+          "content": "<h4>Testnet v0.7 (Chain ID: 71) - VERIFIED WORKING</h4><table><thead><tr><th>Contract</th><th>Address</th><th>Status</th></tr></thead><tbody><tr><td>EntryPointV07</td><td>0xcd3072F98c8f1Caef717dcA1f3A85d9Dc555ae8C</td><td>✅</td></tr><tr><td>SimpleAccountFactoryV07</td><td>0x3d536eA50c323fFA2bc6b7DF0c1AE253f6144eAE</td><td>✅</td></tr><tr><td>VerifyingPaymaster</td><td>0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B</td><td>✅</td></tr></tbody></table><h4>Live Test Proof (April 19, 2026):</h4><ul><li>TX: 0x74ac671c67b9...60a17f9911e1d5995625d1c024f6</li><li>Sender CFX Before: 0.20302872454897</li><li>Sender CFX After: 0.20302872454897 <strong>(UNCHANGED!)</strong></li></ul><h4>Mainnet (Chain ID: 1030)</h4><p>Deploy using:</p><pre><code>cd packages/contracts\nnpm run deploy:v07:mainnet</code></pre>"
         }
       ]
     },
@@ -54,7 +59,7 @@
         {
           "id": "types",
           "title": "TypeScript Types",
-          "content": "<h4>Core Types:</h4><pre><code>interface SponsoredTransaction {\n  to: Address;        // Target contract\n  data?: Hex;          // Encoded call data\n  value?: bigint;      // Native token value\n}\n\ninterface SponsoredTransactionResult {\n  userOpHash: string;    // UserOperation hash\n  txHash?: string;     // Transaction hash (after inclusion)\n  success: boolean;    // Success status\n}\n\ninterface PaymasterQuote {\n  maxFeePerGas: string;\n  maxPriorityFeePerGas: string;\n  gasPrice: string;\n}</code></pre><p><strong>All types are exported from the SDK:</strong></p><pre><code>import {\n  ConfluxPaymaster,\n  PaymasterConfig,\n  SponsoredTransaction,\n  SponsoredTransactionResult,\n  PaymasterQuote\n} from '@conflux-paymaster/sdk';</code></pre>"
+          "content": "<h4>Core Types:</h4><pre><code>interface SponsoredTransaction {\n  to: Address;        // Target contract\n  data?: Hex;          // Encoded call data\n  value?: bigint;      // Native token value\n}\n\ninterface SponsoredTransactionResult {\n  userOpHash: string;    // UserOperation hash\n  txHash?: string;     // Transaction hash (after inclusion)\n  success: boolean;    // Success status\n}\n\ninterface PaymasterQuote {\n  maxFeePerGas: string;\n  maxPriorityFeePerGas: string;\n  gasPrice: string;\n}</code></pre><p><strong>All types are exported from the SDK:</strong></p><pre><code>import {\n  ConfluxPaymaster,\n  PaymasterConfig,\n  SponsoredTransaction,\n  SponsoredTransactionResult,\n  PaymasterQuote\n} from 'conflux-paymaster-sdk';</code></pre>"
         }
       ]
     },
@@ -102,12 +107,12 @@
         {
           "id": "basic-integration",
           "title": "Basic Integration",
-          "content": "<p>A complete example of integrating Conflux Paymaster SDK:</p><pre><code>import { ConfluxPaymaster } from '@conflux-paymaster/sdk';\nimport { encodeFunctionData, parseAbi } from 'viem';\n\n// Initialize\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'http://localhost:3001',\n  chainId: 71,\n});\n\n// Connect user\nawait paymaster.connect(userPrivateKey);\n\n// Set factory\nawait paymaster.setFactory('0xcF2acdAEde6bb2549647CA5eE52fe5b86757d01E');\n\n// ERC-20 transfer example\nconst transferData = encodeFunctionData({\n  abi: parseAbi(['function transfer(address to, uint256 amount)']),\n  functionName: 'transfer',\n  args: [recipientAddress, BigInt(1e18)]\n});\n\n// Send gasless transaction\nconst result = await paymaster.sendTransaction({\n  to: tokenAddress,\n  data: transferData,\n});\n\nconsole.log('Success! UserOp:', result.userOpHash);</code></pre>"
+          "content": "<p>A complete example of integrating Conflux Paymaster SDK:</p><pre><code>import { ConfluxPaymaster } from 'conflux-paymaster-sdk';\nimport { encodeFunctionData, parseAbi } from 'viem';\n\n// Initialize\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: 'https://evmtestnet.confluxrpc.com',\n  paymasterAddress: '0x0cDE16Cf1fD5Bf2536069Aec8a2eF0832A27577B',\n  signingServiceUrl: 'https://conflux-paymaster.onrender.com',\n  chainId: 71,\n});\n\n// Connect user\nawait paymaster.connect(userPrivateKey);\n\n// Set factory\nawait paymaster.setFactory('0xcF2acdAEde6bb2549647CA5eE52fe5b86757d01E');\n\n// ERC-20 transfer example\nconst transferData = encodeFunctionData({\n  abi: parseAbi(['function transfer(address to, uint256 amount)']),\n  functionName: 'transfer',\n  args: [recipientAddress, BigInt(1e18)]\n});\n\n// Send gasless transaction\nconst result = await paymaster.sendTransaction({\n  to: tokenAddress,\n  data: transferData,\n});\n\nconsole.log('Success! UserOp:', result.userOpHash);</code></pre>"
         },
         {
           "id": "nextjs-example",
           "title": "Next.js Integration",
-          "content": "<p>Integrating with a Next.js frontend:</p><pre><code>// lib/paymaster.ts\nimport { ConfluxPaymaster } from '@conflux-paymaster/sdk';\n\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: process.env.NEXT_PUBLIC_CONFLUX_RPC_URL!,\n  paymasterAddress: process.env.NEXT_PUBLIC_PAYMASTER_ADDRESS!,\n  signingServiceUrl: process.env.NEXT_PUBLIC_SIGNING_SERVICE_URL!,\n  chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '71') as 71 | 1030,\n});\n\nexport default paymaster;</code></pre><p>Then use in your components:</p><pre><code>import paymaster from '@/lib/paymaster';\n\nawait paymaster.connect(privateKey);\nconst result = await paymaster.sendTransaction({\n  to: contractAddress,\n  data: txData\n});</code></pre>"
+          "content": "<p>Integrating with a Next.js frontend:</p><pre><code>// lib/paymaster.ts\nimport { ConfluxPaymaster } from 'conflux-paymaster-sdk';\n\nconst paymaster = new ConfluxPaymaster({\n  rpcUrl: process.env.NEXT_PUBLIC_CONFLUX_RPC_URL!,\n  paymasterAddress: process.env.NEXT_PUBLIC_PAYMASTER_ADDRESS!,\n  signingServiceUrl: process.env.NEXT_PUBLIC_SIGNING_SERVICE_URL!,\n  chainId: parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '71') as 71 | 1030,\n});\n\nexport default paymaster;</code></pre><p>Then use in your components:</p><pre><code>import paymaster from '@/lib/paymaster';\n\nawait paymaster.connect(privateKey);\nconst result = await paymaster.sendTransaction({\n  to: contractAddress,\n  data: txData\n});</code></pre>"
         }
       ]
     },
@@ -118,7 +123,7 @@
         {
           "id": "erc20-transfer",
           "title": "ERC-20 Transfer",
-          "content": "<p>Example: Transferring ERC-20 tokens gas-free</p><pre><code>import { ConfluxPaymaster, encodeFunctionData } from '@conflux-paymaster/sdk';\n\nconst paymaster = new ConfluxPaymaster(config);\nawait paymaster.connect(userPrivateKey);\n\n// Token transfer\nconst data = encodeFunctionData({\n  functionName: 'transfer',\n  args: [recipient, BigInt(1e18)]\n});\n\nconst result = await paymaster.sendTransaction({\n  to: usdtAddress,\n  data\n});</code></pre>"
+          "content": "<p>Example: Transferring ERC-20 tokens gas-free</p><pre><code>import { ConfluxPaymaster, encodeFunctionData } from 'conflux-paymaster-sdk';\n\nconst paymaster = new ConfluxPaymaster(config);\nawait paymaster.connect(userPrivateKey);\n\n// Token transfer\nconst data = encodeFunctionData({\n  functionName: 'transfer',\n  args: [recipient, BigInt(1e18)]\n});\n\nconst result = await paymaster.sendTransaction({\n  to: usdtAddress,\n  data\n});</code></pre>"
         },
         {
           "id": "nft-mint",
