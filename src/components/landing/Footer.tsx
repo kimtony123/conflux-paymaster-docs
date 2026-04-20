@@ -1,8 +1,16 @@
 import React from "react";
+import { useTheme } from "../../services/ThemeProvider";
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  variant?: 'light' | 'dark' | 'auto';
+}
+
+const Footer: React.FC<FooterProps> = ({ variant = 'auto' }) => {
+  const { theme } = useTheme();
+  const effectiveTheme = variant === 'auto' ? theme : variant;
+  
   return (
-    <footer className="home-footer">
+    <footer className={`home-footer ${effectiveTheme}`}>
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">

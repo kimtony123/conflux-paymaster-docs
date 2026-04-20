@@ -17,7 +17,7 @@ const Home: React.FC = () => {
  
   return (
     <div className="home-body">
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Navbar theme={theme} toggleTheme={toggleTheme} showDashboard={false} />
       <HeroSection />
       <UserGroupsSection />
       <HowItWorksSection />

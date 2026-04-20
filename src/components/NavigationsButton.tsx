@@ -6,7 +6,7 @@ interface NavigationButtonProps {
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  variant?: "default" | "premium" | "success";
+  variant?: "default" | "premium" | "success" | "primary" | "secondary";
 }
 
 const NavigationButton: React.FC<NavigationButtonProps> = ({
@@ -24,6 +24,10 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
         return "home-btn home-btn-premium";
       case "success":
         return "home-btn home-btn-success";
+      case "primary":
+        return "home-btn home-btn-primary";
+      case "secondary":
+        return "home-btn home-btn-secondary";
       default:
         return "home-btn";
     }

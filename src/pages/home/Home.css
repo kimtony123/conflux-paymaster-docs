@@ -226,6 +226,36 @@
   box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3);
 }
 
+.home-btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.home-btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.home-btn-secondary {
+  background: transparent;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.home-btn-secondary:hover {
+  background: #eff6ff;
+  transform: translateY(-2px);
+}
+
 /* Trust Metrics */
 .trust-metrics {
   display: flex;
@@ -932,6 +962,33 @@
   color: var(--text-light);
   padding: 4rem 0 2rem;
   border-top: 1px solid var(--border-dark);
+}
+
+.home-footer.light {
+  background: #f8f9fa;
+  color: #1a1a2e;
+  border-top: 1px solid #e0e0e0;
+}
+
+.home-footer.light .footer-links h4,
+.home-footer.light .footer-brand h4 {
+  color: #1a1a2e;
+}
+
+.home-footer.light .footer-links a {
+  color: #4a4a6a;
+}
+
+.home-footer.light .footer-links a:hover {
+  color: var(--accent-cyan);
+}
+
+.home-footer.light .footer-bottom {
+  border-top: 1px solid #e0e0e0;
+}
+
+.home-footer.light .footer-tagline {
+  color: #00d4aa;
 }
 
 .footer-grid {

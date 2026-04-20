@@ -28,13 +28,23 @@ const FeaturesSection: React.FC = () => {
           </div>
           <div className="benefit-card">
             <div className="benefit-icon">🧪</div>
-            <h3>Tested Contracts</h3>
-            <p>32 passing tests on smart contracts. Audited and verified.</p>
+            <h3>✅ LIVE TESTED</h3>
+            <p>E2E test passed! Sender CFX unchanged after transaction.</p>
           </div>
           <div className="benefit-card">
             <div className="benefit-icon">🌐</div>
             <h3>Conflux Native</h3>
             <p>Purpose-built for Conflux eSpace testnet and mainnet.</p>
+          </div>
+          <div className="benefit-card">
+            <div className="benefit-icon">🏢</div>
+            <h3>Multi-Tenant</h3>
+            <p>Multiple DApps can register as verifiers with their own quotas.</p>
+          </div>
+          <div className="benefit-card">
+            <div className="benefit-icon">🔄</div>
+            <h3>Relayer Service</h3>
+            <p>Built-in relayer submits to EntryPoint, gets reimbursed by paymaster.</p>
           </div>
         </div>
       </div>

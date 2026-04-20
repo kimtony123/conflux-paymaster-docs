@@ -1,0 +1,178 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea22, #764ba222),
+              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  padding-top: 80px;
+}
+
+.login-page .page-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  width: 100%;
+}
+
+.login-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.login-loading .loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.login-card {
+  max-width: 480px;
+  width: 100%;
+  padding: 3rem 2rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.login-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 50%;
+  color: white;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 2rem !important;
+  margin-bottom: 1rem !important;
+  color: #1e293b;
+}
+
+.login-description {
+  text-align: center;
+  margin-bottom: 2rem !important;
+}
+
+.login-description .header {
+  margin-bottom: 0.5rem;
+}
+
+.login-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-note {
+  text-align: center;
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+.login-note i {
+  margin-right: 0.25rem;
+}
+
+/* Wallet connect button styling */
+.wallet-connect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.wallet-connect .ui.button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.wallet-connect .ui.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.wallet-connect .ui.button:active {
+  transform: translateY(0);
+}
+
+.wallet-connect .ui.button.blue {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.wallet-connect .ui.loading.button {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Error message styling */
+.wallet-connect .ui.message {
+  max-width: 100%;
+  margin: 0;
+}
+
+.wallet-connect .ui.loading.button::after {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 0.5rem;
+}
+
+/* Dark mode */
+.dark-theme .login-card {
+  background: #1e293b;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .login-title {
+  color: #f1f5f9;
+}
+
+.dark-theme .login-description {
+  color: #94a3b8;
+}
+
+.dark-theme .login-note {
+  color: #64748b;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .login-title {
+    font-size: 1.5rem !important;
+  }
+}
